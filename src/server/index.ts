@@ -1,6 +1,7 @@
+import { context, createServer, getServerPort, reddit, redis } from '@devvit/web/server';
+import type { UiResponse } from '@devvit/web/shared';
 import express from 'express';
-import { InitResponse, IncrementResponse, DecrementResponse } from '../shared/types/api';
-import { redis, reddit, createServer, context, getServerPort } from '@devvit/web/server';
+import { DecrementResponse, IncrementResponse, InitResponse } from '../shared/types/api';
 import { createPost } from './core/post';
 
 const app = express();
@@ -121,6 +122,21 @@ router.post('/internal/menu/post-create', async (_req, res): Promise<void> => {
       status: 'error',
       message: 'Failed to create post',
     });
+  }
+});
+
+router.post<unknown, UiResponse>('/internal/menu/fetch', async (_req, res) => {
+  try {
+    const response = await fetch('https://random.org/foobar');
+    res.json({
+      showToast: {
+        text: `${response.url} returned status ${response.status} ${response.statusText}`,
+        appearance: 'success',
+      },
+    });
+  } catch (error) {
+    console.error(`Error fetching from random.org`, error);
+    res.json({ showToast: { text: 'Failed to fetch from random.org', appearance: 'neutral' } });
   }
 });
 

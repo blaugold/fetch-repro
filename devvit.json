@@ -1,6 +1,11 @@
 {
   "$schema": "https://developers.reddit.com/schema/config-file.v1.json",
   "name": "fetch-repro",
+  "permissions": {
+    "http": {
+      "domains": ["random.org"]
+    }
+  },
   "post": {
     "dir": "dist/client",
     "entrypoints": {
@@ -22,6 +27,12 @@
         "location": "subreddit",
         "forUserType": "moderator",
         "endpoint": "/internal/menu/post-create"
+      },
+      {
+        "label": "Fetch",
+        "location": "subreddit",
+        "forUserType": "moderator",
+        "endpoint": "/internal/menu/fetch"
       }
     ]
   },
